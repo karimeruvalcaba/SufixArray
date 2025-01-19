@@ -1,19 +1,10 @@
 /* HEADER
- * Este código resuelve un laberinto utilizando las técnicas "Backtracking" junto con "Ramificación y poda".
- * Primero se inicializan las 3 variables necesarias oara almacenar las matrices de los laberintos tanto de entrada
- * como de las 2 soluciones previamente mencionadas.
- *
- * Para la solución que utiliza backtracking, se hace uso de la recursividad para verificar si la celda actual es válida
- * utilizando la función isValidPlace (La cual verifica que la celda se encuentre dentro de los límites del laberinto y que sea 1),
- * para después movernos a otra celda y restroceder si es que no se encuentra un camino
- * válido. Ésta función tiene como caso base el que la celda actual sea la celda objetivo [M-1, N-1].
- *
- * Por otro lado, para la solución que utiliza Ramificación y poda se hace uso de un queue para explorar las celdas de forma eficiente
- * mientras se evita explorar celdas ya visitadas. De forma similar a la solución con backtracking, primero se verfifica si la celda
- * actual es la equivalente al final del laberinto para después explorar el resto de las celdas del laberinto, agregándolas al queue
- * si es que éstas son válidas.
- *
- * Al final se implementa la función findSolutions para gestionar ambas soluciones e imprimirlas en la función main.
+ * Este programa regresa el arreglo de substring alfabeticamente dado un string.
+ * Complejidad computacional:
+ * 1. Generar sufijos: O(n^2) - Se crean n sufijos y cada uno puede tener hasta n caracteres.
+ * 2. Ordenar sufijos: O(n Log n) - Se ordenan n sufijos alfabeticamente
+ * 3. Extraer índices: O(n) - Se recorre el vector ordenado para extraer sus índices.
+ * Total: O(n^2) (de acuerdo con la generación de sufijos)
  */
 
 /* AUTORES
@@ -32,16 +23,23 @@ using namespace std;
 
 vector<int> suffix_array_maive(string S){
   int n = S.length();
-  vector<pair<string, int>> sa;
+  vector<pair<string, int>> sa; // Vector para almacenar los sufijos y sus índices
   vector<int> A;
   S = S + "$";
+  // Se generan los sufijos y almacenan sus índices 
+  // Complejidad: O(n^2)
   for (int i = 0; i < n; i++){
-    sa.push_back({S.substr(i), i + 1});
+    sa.push_back({S.substr(i), i + 1}); 
   }
+
+  // Se ordenan los sufijos alfabeticamente
+  // Complejidad: O(n Log n)
   sort(sa.begin(), sa.end());
 
+  // Se extrae el indice de los sufijos ya ordenados
+  // Complejidad: O(n)
   for (auto &p : sa){
-    A.push_back(p.second);
+    A.push_back(p.second); // Se agrega el indice inicial, es decir 1
   }
   return A;
 
@@ -50,8 +48,9 @@ vector<int> suffix_array_maive(string S){
 int main(){
   string s;
   cout << "Dame tu input por favor: ";
-  getline(cin, s);
+  getline(cin, s); // Se lee el input dado por el usuario
   vector<int> suffixArray = suffix_array_maive(s);
+  // Se imprime el indice de los sufijos, uno por linea
   for (int index : suffixArray){
     cout << index << endl;
   }
